@@ -1,0 +1,6 @@
+@IPInformationRetrieval_HostAddress = http://localhost:5019
+
+GET {{IPInformationRetrieval_HostAddress}}/IpInformation/
+Accept: application/json
+
+###
