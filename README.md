@@ -60,10 +60,6 @@ Features:
 
 ----- Manages API versioning for future compatibility. *
 
-* Decorators: 
-
------ Leverages decorators (e.g., resilience pipeline for HttpClient in Program.cs) for enhanced service behavior. *
-
 * Dockerization: 
 
 ----- Containerizes the application for ease of deployment and management. *

@@ -9,6 +9,8 @@ using IPInformationRetrieval.Services;
 using IPInformationRetrieval.Services.Selectors;
 using Microsoft.EntityFrameworkCore;
 using Refit;
+using Polly;
+using Polly.Retry;
 
 namespace IPInformationRetrieval
 {
@@ -57,22 +59,10 @@ namespace IPInformationRetrieval
                 builder.Services.AddDbContext<IpInformationDbContext>(options =>
                     options.UseSqlite(builder.Configuration.GetConnectionString("SQLiteDb")), ServiceLifetime.Singleton);
 
-                //Added resilience pipeline
-                //builder.Services.AddResiliencePipeline("default", x =>
-                //    x.AddRetry(new RetryStrategyOptions
-                //    {
-                //        ShouldHandle = new PredicateBuilder().Handle<Exception>(),
-                //        Delay = TimeSpan.FromSeconds(2),
-                //        MaxRetryAttempts = 2,
-                //        BackoffType = DelayBackoffType.Exponential,
-                //        UseJitter = true
-                //    }
-                //).AddTimeout(TimeSpan.FromSeconds(30)));
-
-                //Configured refit to use the resilience pipeline
+                //Configured hhtpclient to use the resilience pipeline
                 builder.Services.AddRefitClient<IIp2cEndpoints>()
-                    .ConfigureHttpClient((sp, hc) => hc.BaseAddress = new Uri(builder.Configuration["IpInformationUrl"]));
-                //    .AddStandardResilienceHandler();
+                    .ConfigureHttpClient((sp, hc) => hc.BaseAddress = new Uri(builder.Configuration["IpInformationUrl"]))
+                    .AddStandardResilienceHandler();
 
                 //This job scheduler workds but sometimes it causes timeout for swagger so i desabled it for now
                 //builder.Services.AddHostedService<JobScheduler>();
