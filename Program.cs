@@ -9,8 +9,6 @@ using IPInformationRetrieval.Services;
 using IPInformationRetrieval.Services.Selectors;
 using Microsoft.EntityFrameworkCore;
 using Refit;
-using Polly;
-using Polly.Retry;
 
 namespace IPInformationRetrieval
 {
