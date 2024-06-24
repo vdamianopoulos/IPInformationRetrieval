@@ -3,6 +3,7 @@ using IPInformationRetrieval.Abstractions;
 using IPInformationRetrieval.Controllers;
 using IPInformationRetrieval.Database;
 using IPInformationRetrieval.Database.DatabaseContext;
+using IPInformationRetrieval.Filters;
 using IPInformationRetrieval.Providers;
 using IPInformationRetrieval.Repositories;
 using IPInformationRetrieval.Services;
@@ -22,7 +23,11 @@ namespace IPInformationRetrieval
                 var builder = WebApplication.CreateBuilder(args);
                 builder.Logging.AddConsole();
 
-                builder.Services.AddControllers();
+                builder.Services.AddControllers(options =>
+                {
+                    options.Filters.Add<InternalServerErrorFilter>();
+                });
+
                 builder.Services.AddApiVersioning(options =>
                 {
                     options.ReportApiVersions = true;
